@@ -62,12 +62,12 @@
         }
         .pause{
             background-color: #ffd23f;
-            color: #0d1b2a;
+            color: #131821;
             font-weight: 200;
         }
         .resume{
             background-color: #0ead69;
-            color: #0d1b2a;
+            color: #e1f0ff;
             font-weight: 200;
 
         }
@@ -106,14 +106,14 @@
         }
         .hi{
             color: #dc3545;
-            font-weight: bolder;
+            font-weight: 800;
             background-color: #fff;
             border-radius: 4px;
             padding: 3px;
         }
         .lo{
             color: #0ead69;
-            font-weight: bolder;
+            font-weight: 800;
             background-color: #fff;
             border-radius: 4px;
             padding: 3px;
@@ -190,10 +190,10 @@
         <div class="button-container">
             <button id="startStopBtn" class="start-btn">Start</button>
             <button id="doneBtn" disabled class="doneBtn">Question Done</button>
-            <button id="pauseBtn" disabled>Pause</button>
+            <button id="pauseBtn" class="pause" disabled>Pause</button>
         </div>
         <div class="stats" id="stats">
-            <p>Questions Done: <span id="questionsDone">0</span></p>
+            <p>Questions Done: <span id="questionsDone" style="font-weight: 900; color: #f6aa1c;">0</span></p>
             <p>Highest Time <span id="highestTime" class="hi">00:00</span></p>
             <p>Lowest Time <span id="lowestTime" class="lo">00:00</span></p>
         </div>
