@@ -267,12 +267,18 @@
             });
         }
 
+
         function stopTimers() {
+            clearInterval(totalTimerInterval);
+            clearInterval(questionTimerInterval);
+
+            totalTimerDisplay.textContent = "00:00";
+            questionTimerDisplay.textContent = "00:00";
+
             totalStartTime = Date.now(); // Reset total time start
             questionStartTime = Date.now();
 
-            clearInterval(totalTimerInterval);
-            clearInterval(questionTimerInterval);
+
             isRunning = false;
             startStopBtn.textContent = "Start";
             startStopBtn.classList.remove("stop-btn");
@@ -282,6 +288,7 @@
             // Render graphs after stopping the session
             displayStats();
         }
+
 
         function questionDone() {
             const elapsedQuestionTime = Date.now() - questionStartTime;
