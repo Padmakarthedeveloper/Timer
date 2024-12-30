@@ -53,8 +53,8 @@
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #f0ebd8;
-            color: #0d1b2a;
+            background-color: #3f3481;
+            color: #ffffff;
         }
         .doneBtn{
             background-color: #0496ff;
@@ -333,6 +333,7 @@
 
             // Render graphs after stopping the session
             displayStats();
+            renderGraphs()
         }
 
         function questionDone() {
@@ -483,7 +484,7 @@
                 isPaused = false;
                 pauseBtn.textContent = "Pause";
                 pauseBtn.classList.remove("resume")
-                pauseBtn.classList.add("pause")
+                pauseBtn.classList.add("pasue")
             }
 
 
