@@ -177,13 +177,25 @@
     100% { transform: translateY(0); }
 }
 
-
+.timer{
+    border-radius: 10px; /* Round the corners */
+    padding: 10px 20px; /* Padding inside the border (top-bottom, left-right) */
+    font-size: 16px; /* Font size of the text */
+    color: #fff; /* Text color */
+    background-color: #ff6969; /* Background color, you can change it */
+    text-align: center; /* Center the text inside the box */
+    font-weight: 300;
+}
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="align-items: center;">
         <h1>Timer</h1>
+
+
         <div class="timer-display">
+         <p> <span class="timer" id="JEEtimer"></span></p> 
+
             <p>Session time <br><br> <span id="totalTimer" class="sessiontimer" >00:00</span></p>
             <p>Current Question:<br> <br><span id="questionTimer" class="question">00:00</span></p>
         </div>
@@ -203,6 +215,38 @@
             <canvas id="questionGraph" width="400" height="200"></canvas>
         </div>
     </div>
+
+
+  <script>
+    function updateTimer() {
+      // Set the target date
+      const targetDate = new Date("January 22, 2025 00:00:00").getTime();
+
+      // Get the current date and time
+      const currentDate = new Date().getTime();
+
+      // Calculate the difference between the target date and current date
+      const timeRemaining = targetDate - currentDate;
+
+      // Calculate days, hours, minutes, and seconds
+      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+      // Display the result in the HTML element
+      document.getElementById("JEEtimer").innerHTML =
+        "T-" + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+      // If the timer reaches zero, show a message
+      if (timeRemaining < 0) {
+        document.getElementById("JEEtimer").innerHTML = "Time's up!";
+      }
+    }
+
+    // Update the timer every second
+    setInterval(updateTimer, 1000);
+  </script>
 
     <script>
         let totalTimerInterval, questionTimerInterval;
