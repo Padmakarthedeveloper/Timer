@@ -15,29 +15,31 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #121212;
-            color: #fff;
+            background-color: #0d1b2a;
+            color: #fffcf2;
         }
         .container {
             margin-top: 20px;
         }
         .sessiontimer {
-            border: 2px solid #007BFF; /* Blue border, you can change the color */
+            border: 2px solid #62b6cb; /* Blue border, you can change the color */
             border-radius: 10px; /* Round the corners */
             padding: 10px 20px; /* Padding inside the border (top-bottom, left-right) */
-            font-size: 16px; /* Font size of the text */
+            font-size: 24px; /* Font size of the text */
             color: #fff; /* Text color */
-            background-color: #007BFF; /* Background color, you can change it */
+            background-color: #62b6cb; /* Background color, you can change it */
             text-align: center; /* Center the text inside the box */
+            font-weight: 500;
         }
         .question{
             border: 2px solid #f7f7f700; /* Blue border, you can change the color */
             border-radius: 10px; /* Round the corners */
             padding: 10px 20px; /* Padding inside the border (top-bottom, left-right) */
             font-size: 64px; /* Font size of the text */
-            color: #000000; /* Text color */
-            background-color: #fee85a; /* Background color, you can change it */
+            color: #003459; /* Text color */
+            background-color: #f6aa1c; /* Background color, you can change it */
             text-align: center; /* Center the text inside the box */
+            font-weight: 1000;
         }
         button {
             padding: 10px 20px;
@@ -51,16 +53,36 @@
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #f0ebd8;
+            color: #0d1b2a;
+        }
+        .doneBtn{
+            background-color: #0496ff;
+            font-weight: 800;
+        }
+        .pause{
+            background-color: #ffd23f;
+            color: #0d1b2a;
+            font-weight: 200;
+        }
+        .resume{
+            background-color: #0ead69;
+            color: #0d1b2a;
+            font-weight: 200;
+
         }
         .start-btn {
             background-color: #28a745;
+            font-weight: 200;
         }
         .stop-btn {
             background-color: #dc3545;
+            font-weight: 200;
+
         }
         .stats {
             margin-top: 20px;
+            font-weight: 200;
         }
         .stats p {
             font-size: 20px;
@@ -81,6 +103,20 @@
         .button-container button {
             width: 150px;
             position: relative;
+        }
+        .hi{
+            color: #dc3545;
+            font-weight: bolder;
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 3px;
+        }
+        .lo{
+            color: #0ead69;
+            font-weight: bolder;
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 3px;
         }
             /* Quick, Snappy Bounce */
 /* Keyframes for the stars shooting out and falling down */
@@ -146,24 +182,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Timer </h1>
-        <h3> "Success ke peeche mat bhaago, excellence ka peecha karo, success jhak maarke tumhare peeche ayegi."</h3>
+        <h1>Timer</h1>
         <div class="timer-display">
-            <p>Session time<br><br><span id="totalTimer" class="sessiontimer">00:00</span></p>
+            <p>Session time <br><br> <span id="totalTimer" class="sessiontimer" >00:00</span></p>
             <p>Current Question:<br> <br><span id="questionTimer" class="question">00:00</span></p>
         </div>
         <div class="button-container">
             <button id="startStopBtn" class="start-btn">Start</button>
-            <button id="doneBtn" disabled>Question Done</button>
+            <button id="doneBtn" disabled class="doneBtn">Question Done</button>
+            <button id="pauseBtn" disabled>Pause</button>
         </div>
         <div class="stats" id="stats">
             <p>Questions Done: <span id="questionsDone">0</span></p>
-            <p>Highest Time Taken: <span id="highestTime">00:00</span></p>
-            <p>Lowest Time Taken: <span id="lowestTime">00:00</span></p>
+            <p>Highest Time <span id="highestTime" class="hi">00:00</span></p>
+            <p>Lowest Time <span id="lowestTime" class="lo">00:00</span></p>
         </div>
         <div>
             <canvas id="timeGraph" width="400" height="200"></canvas>
             <canvas id="avgGraph" width="400" height="200"></canvas>
+            <canvas id="questionGraph" width="400" height="200"></canvas>
         </div>
     </div>
 
@@ -174,6 +211,7 @@
         let isRunning = false;
         let sessionCount = 0; // Track session count for new sessions
         let questionsDoneCount = 0; // Track questions done count
+        let isPaused = false;
 
         const totalTimerDisplay = document.getElementById("totalTimer");
         const questionTimerDisplay = document.getElementById("questionTimer");
@@ -181,13 +219,16 @@
         const doneBtn = document.getElementById("doneBtn");
         const highestTimeDisplay = document.getElementById("highestTime");
         const lowestTimeDisplay = document.getElementById("lowestTime");
+        const pauseBtn = document.getElementById("pauseBtn");
         const questionsDoneDisplay = document.getElementById("questionsDone");
+        let totalTimerPausedTime = 0; // To store paused elapsed time for total timer
+        let questionTimerPausedTime = 0;
 
         // Graph elements
         const timeGraphCtx = document.getElementById("timeGraph").getContext("2d");
         const avgGraphCtx = document.getElementById("avgGraph").getContext("2d");
 
-            let sessionData = JSON.parse(localStorage.getItem("sessionData")) || [];
+        let sessionData = JSON.parse(localStorage.getItem("sessionData")) || [];
 
         function formatTime(ms) {
             const totalSeconds = Math.floor(ms / 1000);
@@ -199,7 +240,7 @@
         function formatTimeInSeconds(ms) {
             return (ms / 1000).toFixed(2); // Format as seconds (2 decimal places)
         }
-        console.log(doneBtn)
+            console.log(doneBtn)
         function formatTimeInMinutes(ms) {
             return (ms / 60000).toFixed(2); // Format as minutes (2 decimal places)
         }
@@ -237,6 +278,7 @@
             renderGraphs();
         }
         function startTimers() {
+            questionsDoneCount = 0;
             if (!totalStartTime) {
                 totalStartTime = Date.now();
             }
@@ -257,6 +299,7 @@
             startStopBtn.classList.remove("start-btn");
             startStopBtn.classList.add("stop-btn");
             doneBtn.disabled = false;
+            pauseBtn.disabled = false;
 
             sessionCount++;
             sessionData.push({
@@ -267,13 +310,14 @@
             });
         }
 
-
         function stopTimers() {
+            questionsDoneCount = 0;
             clearInterval(totalTimerInterval);
             clearInterval(questionTimerInterval);
 
             totalTimerDisplay.textContent = "00:00";
             questionTimerDisplay.textContent = "00:00";
+            pauseBtn.textContent = "Pause"
 
             totalStartTime = Date.now(); // Reset total time start
             questionStartTime = Date.now();
@@ -284,11 +328,12 @@
             startStopBtn.classList.remove("stop-btn");
             startStopBtn.classList.add("start-btn");
             doneBtn.disabled = true;
+            pauseBtn.disabled = true;
+            isPaused = false;
 
             // Render graphs after stopping the session
             displayStats();
         }
-
 
         function questionDone() {
             const elapsedQuestionTime = Date.now() - questionStartTime;
@@ -342,11 +387,11 @@
                     }]
                 },
             });
+            
         }
 
-        // Bounce Animation when Question Done Button is Pressed
-// Start/Stop button event listener
-function rewardUserWithStars() {
+
+        function rewardUserWithStars() {
     // Create multiple stars (left, right, top, bottom) for a more dynamic effect
     const star1 = document.createElement('div');
     const star2 = document.createElement('div');
@@ -390,17 +435,67 @@ function rewardUserWithStars() {
            
         });
         document.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" && !doneBtn.disabled) {
-                rewardUserWithStars()
-                questionDone();
-            }
-        });
+    if (e.key === "Enter" && !doneBtn.disabled) {
+        rewardUserWithStars();
+        questionDone();
+    }
+});
         // Listen for Enter key press to trigger question done
 
 
         // Render graphs on page load
         renderGraphs();
 
+        console.log("isPaused before click:", isPaused);
+
+
+        function pauseTimers() {
+            clearInterval(totalTimerInterval);
+            clearInterval(questionTimerInterval);
+
+            // Save the elapsed time
+            totalTimerPausedTime += Date.now() - totalStartTime;
+            questionTimerPausedTime += Date.now() - questionStartTime;
+
+            isPaused = true;
+            pauseBtn.textContent = "Resume";
+            pauseBtn.classList.remove("pause")
+            pauseBtn.classList.add("resume")
+        }
+
+
+
+
+        function resumeTimers() {
+                totalStartTime = Date.now() - totalTimerPausedTime; // Adjust totalStartTime to account for pause
+                questionStartTime = Date.now() - questionTimerPausedTime; // Adjust questionStartTime to account for pause
+
+                totalTimerInterval = setInterval(() => {
+                    const elapsedTotalTime = Date.now() - totalStartTime;
+                    totalTimerDisplay.textContent = formatTime(elapsedTotalTime);
+                }, 1000);
+
+                questionTimerInterval = setInterval(() => {
+                    const elapsedQuestionTime = Date.now() - questionStartTime;
+                    questionTimerDisplay.textContent = formatTime(elapsedQuestionTime);
+                }, 1000);
+
+                isPaused = false;
+                pauseBtn.textContent = "Pause";
+                pauseBtn.classList.remove("resume")
+                pauseBtn.classList.add("pasue")
+            }
+
+
+pauseBtn.addEventListener("click", () => {
+    if (isPaused) {
+        console.log("Resuming timers");
+        resumeTimers();
+    } else {
+        console.log("Pausing timers");
+        pauseTimers();
+    }
+});
     </script>
 </body>
 </html>
