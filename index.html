@@ -22,23 +22,23 @@
             margin-top: 20px;
         }
         .sessiontimer {
-            border: 2px solid #62b6cb; /* Blue border, you can change the color */
-            border-radius: 10px; /* Round the corners */
-            padding: 10px 20px; /* Padding inside the border (top-bottom, left-right) */
-            font-size: 24px; /* Font size of the text */
-            color: #fff; /* Text color */
-            background-color: #62b6cb; /* Background color, you can change it */
-            text-align: center; /* Center the text inside the box */
+            border: 2px solid #62b6cb; 
+            border-radius: 10px; 
+            padding: 10px 20px; 
+            font-size: 24px; 
+            color: #fff; 
+            background-color: #62b6cb; 
+            text-align: center; 
             font-weight: 500;
         }
         .question{
-            border: 2px solid #f7f7f700; /* Blue border, you can change the color */
-            border-radius: 10px; /* Round the corners */
-            padding: 10px 20px; /* Padding inside the border (top-bottom, left-right) */
-            font-size: 64px; /* Font size of the text */
-            color: #003459; /* Text color */
-            background-color: #f6aa1c; /* Background color, you can change it */
-            text-align: center; /* Center the text inside the box */
+            border: 2px solid #f7f7f700; 
+            border-radius: 10px;
+            padding: 10px 20px; 
+            font-size: 64px; 
+            color: #003459;
+            background-color: #f6aa1c; 
+            text-align: center; 
             font-weight: 1000;
         }
         button {
@@ -118,8 +118,6 @@
             border-radius: 4px;
             padding: 3px;
         }
-            /* Quick, Snappy Bounce */
-/* Keyframes for the stars shooting out and falling down */
 @keyframes starburst {
     0% { 
         opacity: 1; 
@@ -150,7 +148,7 @@
 
 /* Create multiple stars from different points */
 .star-left {
-    animation-delay: 0.1s;  /* Slight delay for a more natural burst */
+    animation-delay: 0.1s;  
 }
 
 .star-right {
@@ -178,12 +176,12 @@
 }
 
 .timer{
-    border-radius: 10px; /* Round the corners */
-    padding: 10px 20px; /* Padding inside the border (top-bottom, left-right) */
-    font-size: 16px; /* Font size of the text */
-    color: #fff; /* Text color */
-    background-color: #ff6969; /* Background color, you can change it */
-    text-align: center; /* Center the text inside the box */
+    border-radius: 10px; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    color: #fff; 
+    background-color: #ff6969; 
+    text-align: center; 
     font-weight: 300;
 }
     </style>
@@ -219,32 +217,25 @@
 
   <script>
     function updateTimer() {
-      // Set the target date
       const targetDate = new Date("January 22, 2025 00:00:00").getTime();
 
-      // Get the current date and time
       const currentDate = new Date().getTime();
 
-      // Calculate the difference between the target date and current date
       const timeRemaining = targetDate - currentDate;
 
-      // Calculate days, hours, minutes, and seconds
       const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
       const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-      // Display the result in the HTML element
       document.getElementById("JEEtimer").innerHTML =
         "T-" + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
-      // If the timer reaches zero, show a message
       if (timeRemaining < 0) {
         document.getElementById("JEEtimer").innerHTML = "Time's up!";
       }
     }
 
-    // Update the timer every second
     setInterval(updateTimer, 1000);
   </script>
 
