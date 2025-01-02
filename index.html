@@ -193,6 +193,8 @@
 
         <div class="timer-display">
          <p> <span class="timer" id="JEEtimer"></span></p> 
+         <p> <span class="timer" id="NEETtimer" style="background-color: #a2d2ff; color:#023047"></span></p> 
+
 
             <p>Session time <br><br> <span id="totalTimer" class="sessiontimer" >00:00</span></p>
             <p>Current Question:<br> <br><span id="questionTimer" class="question">00:00</span></p>
@@ -233,6 +235,30 @@
 
       if (timeRemaining < 0) {
         document.getElementById("JEEtimer").innerHTML = "Time's up!";
+      }
+    }
+
+    setInterval(updateTimer, 1000);
+  </script>
+
+      <script>
+    function updateTimer() {
+      const targetDate = new Date("May 4, 2025 00:00:00").getTime();
+
+      const currentDate = new Date().getTime();
+
+      const timeRemaining = targetDate - currentDate;
+
+      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+      document.getElementById("NEETtimer").innerHTML =
+        "T-" + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+      if (timeRemaining < 0) {
+        document.getElementById("NEETtimer").innerHTML = "Time's up!";
       }
     }
 
